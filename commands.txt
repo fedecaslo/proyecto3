@@ -1,0 +1,42 @@
+# INICIAR TODO
+docker-compose up 
+
+# ENTRAR EN LA CONSOLA DE POSTGRES
+docker exec -it postgres /bin/bash/
+
+# DENTRO DE POSTGRES
+psql -U admin rome
+
+# CREAR TABLA DE ROMA
+CREATE TABLE rome_table (
+    idS VARCHAR(255),
+    tsO TIMESTAMP,
+    tsD TIMESTAMP,
+    price NUMERIC(10,4),
+    tt INTEGER,
+    dis NUMERIC(15,6),
+    vel NUMERIC(15,6),
+    lonO NUMERIC(10,6),
+    latO NUMERIC(10,6),
+    lonD NUMERIC(10,6),
+    latD NUMERIC(10,6)
+);
+
+# COPIAR EL CSV EN POSTGRES
+copy rome_table (ids, tso, tsd, price, tt, dis, vel, lono, lato, lond, latd) from '/docker-entrypoint-initdb.d/rome_u_journeys.csv' delimiter ',' csv header;
+
+# Ahora entras en grafana -> add data source
+postgres:5432
+ssl disable
+admin admin rome
+version postgres 12+
+
+# Dashboards: 
+Edit query:
+SELECT
+  tso AS "time",
+  price
+FROM rome_table
+WHERE
+  ids='A0H4'
+
