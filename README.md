@@ -13,7 +13,6 @@ docker-compose up
 Para acceder a la consola de PostgreSQL dentro del contenedor, utiliza los siguientes comandos:
 
 ```bash
-Copy code
 docker exec -it postgres /bin/bash
 ```
 Una vez dentro de la consola del contenedor de postgres:
@@ -48,15 +47,14 @@ COPY rome_table (ids, tso, tsd, price, tt, dis, vel, lono, lato, lond, latd) FRO
 ## 5. Configurar Grafana
 Abre Grafana en tu navegador en `localhost:3000` e añade una nueva fuente de datos PostgreSQL con los siguientes ajustes:
 
-** Host: postgres:5432
-** SSL: Deshabilitar
-** Usuario/Contraseña/Base de Datos: admin/admin/rome
-** Versión: PostgreSQL 12+
+* Host: postgres:5432
+* SSL: Deshabilitar
+* Usuario/Contraseña/Base de Datos: admin/admin/rome
+* Versión: PostgreSQL 12+
 
 ## 6. Configurar Consulta en Grafana
 Edita tu dashboard en Grafana y utiliza la siguiente consulta SQL para visualizar datos específicos (en este caso, para el identificador 'A0H4'):
 ```sql
-Copy code
 SELECT
   tso AS "time",
   price
