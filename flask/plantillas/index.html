@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Uploader</title>
+</head>
+<body>
+    <div id="drop-area">
+        <form class="my-form" id="uploadForm">
+            <p>Arrastra y suelta un archivo CSV aquí o haz clic para seleccionarlo.</p>
+            <input type="file" id="fileElem" multiple accept=".csv">
+            <label class="button" for="fileElem">Seleccionar Archivo</label>
+
+            <!-- Nuevo botón de carga -->
+            <button type="button" onclick="uploadFile()">Upload</button>
+        </form>
+    </div>
+
+
+    <script>
+        document.getElementById('drop-area').addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        document.getElementById('drop-area').addEventListener('drop', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            handleDrop(e.dataTransfer.files);
+        });
+
+        function handleDrop(files) {
+            // Aquí puedes enviar los archivos al servidor mediante una solicitud POST.
+            const formData = new FormData();
+            formData.append('file', files[0]);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                // Puedes mostrar un mensaje de éxito o error en la interfaz.
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function uploadFile() {
+            const inputElement = document.getElementById('fileElem');
+            const files = inputElement.files;
+
+            if (files.length > 0) {
+                const formData = new FormData();
+                formData.append('file', files[0]);
+
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    // Puedes mostrar un mensaje de éxito o error en la interfaz.
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            } else {
+                console.log('No file selected');
+            }
+        }
+    </script>
+</body>
+</html>
+
+</body>
+</html>
