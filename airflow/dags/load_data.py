@@ -51,10 +51,10 @@ def consultar_total_patinetes():
 
     # Realizar consulta SQL para obtener el número total de pacientes
     query = "SELECT COUNT(*) FROM {}".format(POSTGRES_TABLE_NAME)
-    total_pactinetes = pd.read_sql(query, engine).iloc[0, 0]
+    total_patinetes = pd.read_sql(query, engine).iloc[0, 0]
 
     # Crear un DataFrame con el resultado
-    result_df = pd.DataFrame({'total_patinetes': [total_pacientes]})
+    result_df = pd.DataFrame({'total_patinetes': [total_patinetes]})
 
     # Guardar el resultado en una nueva tabla
     result_df.to_sql(NEW_TABLE_NAME, engine, index=False, if_exists='replace')
@@ -69,7 +69,7 @@ with dag:
 
     consultar_pacientes_task = PythonOperator(
         task_id='consultar_total_pacientes',
-        python_callable=consultar_total_pacientes
+        python_callable=consultar_total_patinetes
     )
 
     end_task = DummyOperator(task_id='end')
