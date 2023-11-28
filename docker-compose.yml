@@ -68,3 +68,14 @@ services:
     depends_on:
     - postgres
 
+  flask:
+    container_name: flask
+    ports:
+      - "5001:5001"
+    depends_on:
+      - postgres
+    build:
+      context: ./docker/flask
+      dockerfile: Dockerfile
+    volumes:
+      - ./flask:/flask
