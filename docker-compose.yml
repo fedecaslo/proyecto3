@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3.8'
 services:
   postgres:
     container_name: postgres
@@ -19,6 +19,7 @@ services:
     depends_on:
       - postgres
       - webserver
+      - kafka
     env_file:
       - ./airflow/.env
     ports:
@@ -41,6 +42,7 @@ services:
     restart: always
     depends_on:
       - postgres
+      - kafka
     env_file:
       - ./airflow/.env
     volumes:
@@ -96,3 +98,11 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_LISTENERS: PLAINTEXT://:29092,PLAINTEXT_HOST://:9092,CONTROLLER://:9093
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
+  pruebas:
+    container_name: pruebaskafka
+    depends_on:
+      - kafka
+    image: python:3.12
+    tty: true
+    volumes:
+      - "./:/usr/src/app"

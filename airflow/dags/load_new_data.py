@@ -1,13 +1,19 @@
 from datetime import datetime, timedelta
 from airflow import DAG
-from airflow.providers.apache.kafka.operators.kafka import KafkaToPandasOperator
-from airflow.providers.postgres.operators.postgres import PostgresOperator
+from airflow.operators.python_operator import PythonOperator
 import pandas as pd
+from confluent_kafka import Consumer, KafkaException
+from sqlalchemy import create_engine
+
+# Configura las variables según tus configuraciones
+KAFKA_BROKER = 'kafka:9092'
+KAFKA_TOPIC = 'csv_upload'
+POSTGRES_CONNECTION_STRING = 'postgresql://admin:admin@postgres:5432/rome'
 
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime(2023, 11, 28),
+    'start_date': datetime(2023, 1, 1),
     'retries': 1,
     'retry_delay': timedelta(minutes=5),
 }
@@ -15,38 +21,57 @@ default_args = {
 dag = DAG(
     'kafka_to_postgres',
     default_args=default_args,
-    description='A DAG to read messages from Kafka and insert into a Postgres table',
-    schedule_interval=timedelta(days=1),
+    schedule_interval=timedelta(minutes=30),  # Ajusta según tus necesidades
 )
 
-def process_and_insert_data(**kwargs):
-    # Read messages from Kafka into a Pandas DataFrame
-    kafka_to_pandas = KafkaToPandasOperator(
-        task_id='kafka_to_pandas_task',
-        kafka_topic='csv_upload',
-        bootstrap_servers='kafka:9092',
-        value_deserializer=lambda x: pd.DataFrame(x),
-        dag=dag,
+def consume_kafka_and_save_to_csv(**kwargs):
+    conf = {'bootstrap.servers': KAFKA_BROKER, 'group.id':'fede'}
+    consumer = Consumer(conf)
+
+    try:
+        consumer.subscribe([KAFKA_TOPIC])
+
+        messages = []
+        while True:
+            msg = consumer.poll(1.0)
+            if msg is None:
+                continue
+            if msg.error():
+                if msg.error().code() == KafkaException._PARTITION_EOF:
+                    continue
+                else:
+                    print(msg.error())
+                    break
+
+            messages.append(msg.value().decode('utf-8'))
+
+    finally:
+        consumer.close()
+
+    # Puedes procesar los mensajes según tu lógica
+    df = pd.DataFrame(messages)
+    df.to_csv('./kafka_data/data.csv', index=False)
+
+    return './kafka_data/data.csv'
+
+def insert_csv_to_postgres(**kwargs):
+    csv_path = kwargs['ti'].xcom_pull(task_ids='consume_kafka')['return_value']
+
+    engine = create_engine(POSTGRES_CONNECTION_STRING)
+    df = pd.read_csv(csv_path)
+
+    # Ajusta el nombre de la tabla según tus necesidades
+    df.to_sql('your_postgres_table', engine, index=False, if_exists='append')
+
+with dag:
+    consume_task = PythonOperator(
+        task_id='consume_kafka',
+        python_callable=consume_kafka_and_save_to_csv,
     )
-    
-    # Process the data if needed
-    processed_data = process_data(kafka_to_pandas.output)
 
-    # Insert the processed data into the existing Postgres table
-    insert_into_postgres = PostgresOperator(
-        task_id='insert_into_postgres_task',
-        sql="INSERT INTO your_table SELECT * FROM your_table UNION ALL SELECT * FROM %s",
-        parameters=[processed_data],
-        postgres_conn_id='postgresql://admin:admin@postgres:5432/rome',
-        autocommit=True,
-        dag=dag,
+    insert_task = PythonOperator(
+        task_id='insert_to_postgres',
+        python_callable=insert_csv_to_postgres,
     )
 
-kafka_to_postgres_task = PythonOperator(
-    task_id='process_and_insert_data_task',
-    python_callable=process_and_insert_data,
-    provide_context=True,
-    dag=dag,
-)
-
-kafka_to_pandas >> kafka_to_postgres_task
+    consume_task >> insert_task

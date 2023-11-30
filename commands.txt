@@ -60,8 +60,11 @@ bin/kafka-topics.sh \
       --replication-factor 1 \
       --partitions 1 \
       --topic csv_upload
+      
+bin/kafka-topics.sh --create --bootstrap-server kafka:9092 --replication-factor 1 --partitions 1 --topic csv_upload
 
 bin/kafka-console-consumer.sh \
     --bootstrap-server kafka:9092 \
     --topic csv_upload \
     --from-beginning
+
