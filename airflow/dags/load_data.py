@@ -11,7 +11,6 @@ from sqlalchemy import create_engine
 # Define la conexión a PostgreSQL
 POSTGRES_CONN_ID = 'postgres_conn_id'  # Reemplaza con el nombre de tu conexión
 POSTGRES_TABLE_NAME = 'rome_table'
-NEW_TABLE_NAME = 'total_patients'
 
 # Ruta del archivo CSV
 CSV_FILE_PATH = './data/rome_u_journeys.csv'
@@ -45,19 +44,18 @@ def cargar_csv_a_postgres():
     # Cargar el DataFrame en la base de datos
     df.to_sql(POSTGRES_TABLE_NAME, engine, index=False, if_exists='replace')
 
-def consultar_total_patinetes():
+def ganancias_por_día():
     # Crear una conexión a PostgreSQL usando SQLAlchemy
     engine = create_engine('postgresql://admin:admin@postgres:5432/rome')  # Ajusta la cadena de conexión según tu configuración
 
     # Realizar consulta SQL para obtener el número total de pacientes
-    query = "SELECT COUNT(*) FROM {}".format(POSTGRES_TABLE_NAME)
-    total_patinetes = pd.read_sql(query, engine).iloc[0, 0]
+    query = "SELECT * FROM rome_table"
+    df= pd.read_sql(query, engine)
 
-    # Crear un DataFrame con el resultado
-    result_df = pd.DataFrame({'total_patinetes': [total_patinetes]})
+    # Hacer consulta aqui
 
     # Guardar el resultado en una nueva tabla
-    result_df.to_sql(NEW_TABLE_NAME, engine, index=False, if_exists='replace')
+    df.to_sql('ganancia_por_dia', engine, index=False, if_exists='replace')
 
 with dag:
     start_task = DummyOperator(task_id='start')
