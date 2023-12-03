@@ -1,15 +1,52 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 from confluent_kafka import Producer
 import csv
 import os
 import subprocess
+from google.cloud import dialogflow_v2beta1 as dialogflow
+import json
+import pusher
 
 app = Flask(__name__, template_folder='./plantillas')
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/chat')
+def chat():
+    return render_template('chat.html')
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    req = request.get_json(force=True)
+    print(req)
+
+    return{
+        'fulfillmentText':'Hello from the other side'
+    }
+    
+def detect_intent_texts(project_id, session_id, text, language_code):
+    session_client = dialogflow.SessionsClient()
+    session = session_client.session_path(project_id, session_id)
+
+    if text:
+        text_input = dialogflow.types.TextInput(
+            text=text, language_code=language_code)
+        query_input = dialogflow.types.QueryInput(text=text_input)
+        response = session_client.detect_intent(
+            session=session, query_input=query_input)
+        return response.query_result.fulfillment_text
+
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    message = request.form['message']
+    project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
+    fulfillment_text = detect_intent_texts(project_id, "unique", message, 'en')
+    response_text = { "message":  fulfillment_text }
+    return jsonify(response_text)
+
 
 @app.route('/upload', methods=['POST'])
 def upload_file():

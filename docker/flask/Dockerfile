@@ -8,7 +8,7 @@ COPY . /flask
 WORKDIR /flask
 
 # Instalar Flask
-RUN pip install flask confluent_kafka
+RUN pip install flask confluent_kafka google-cloud-dialogflow pusher
 
 # Ejecutar servidor web
 CMD ["python", "app.py"]

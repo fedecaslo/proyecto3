@@ -79,6 +79,8 @@ services:
     build:
       context: ./docker/flask
       dockerfile: Dockerfile
+    env_file:
+      - ./flask/.env
     volumes:
       - ./flask:/flask
 
@@ -98,7 +100,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_LISTENERS: PLAINTEXT://:29092,PLAINTEXT_HOST://:9092,CONTROLLER://:9093
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
-      
+
   patinetes:
     container_name: patinetes-kafka
     depends_on:
