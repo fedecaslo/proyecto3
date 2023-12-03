@@ -24,7 +24,7 @@ def webhook():
     print(req)
 
     return{
-        'fulfillmentText':'Hello from the other side'
+        'fulfillmentText':'Hello from the other side Lu' 
     }
 
 def detect_intent_texts(project_id, session_id, text, language_code):
