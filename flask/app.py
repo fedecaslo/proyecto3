@@ -26,9 +26,9 @@ def webhook():
     return{
         'fulfillmentText':'Hello from the other side'
     }
-    
+
 def detect_intent_texts(project_id, session_id, text, language_code):
-    session_client = dialogflow.SessionsClient()
+    session_client = dialogflow.Sessiogit nsClient()
     session = session_client.session_path(project_id, session_id)
 
     if text:
