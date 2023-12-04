@@ -18,15 +18,7 @@ def index():
 def chat():
     return render_template('chat.html')
 
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    req = request.get_json(force=True)
-    print(req)
-
-    return{
-        'fulfillmentText':'Hello from the other side Lu' 
-    }
-
+@app.route('/send_message', methods=['POST'])
 def detect_intent_texts(project_id, session_id, text, language_code):
     session_client = dialogflow.Sessiogit nsClient()
     session = session_client.session_path(project_id, session_id)
@@ -39,7 +31,14 @@ def detect_intent_texts(project_id, session_id, text, language_code):
             session=session, query_input=query_input)
         return response.query_result.fulfillment_text
 
-@app.route('/send_message', methods=['POST'])
+def webhook():
+    req = request.get_json(force=True)
+    print(req)
+
+    return{
+        'fulfillmentText':'Hello from the other side Lu' 
+    }
+
 def send_message():
     message = request.form['message']
     project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
