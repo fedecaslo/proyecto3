@@ -142,7 +142,38 @@ def resumen_diario_patinete():
     }).reset_index()
 
     # Guardar el resultado en una nueva tabla
-    df.to_sql('demanda_por_horas', engine, index=False, if_exists='replace')
+    df.to_sql('resumen_diario', engine, index=False, if_exists='replace')
+
+def bateria_patinete():
+    # Crear una conexión a PostgreSQL usando SQLAlchemy
+    engine = create_engine('postgresql://admin:admin@postgres:5432/rome')  # Ajusta la cadena de conexión según tu configuración
+
+    # Realizar consulta SQL para obtener el número total de pacientes
+    query = "SELECT * FROM rome_table"
+    data = pd.read_sql(query, engine)
+    data['tsO'] = pd.to_datetime(data['tsO'])
+    data['tsD'] = pd.to_datetime(data['tsD'])
+    
+    # Hacer consulta aqui
+    df_consumo = data.copy()
+    dia_ultimo = df_consumo['tsO'].dt.date.max()
+    df_consumo[df_consumo.tsD.dt.date == dia_ultimo]
+    df_consumo['consumo'] = df_consumo['dis'] * 13.5 / 1000 # consumo constante de 13.5 Wh/km
+    df_consumo = df_consumo.sort_values(by='tsO').reset_index(drop=True)
+    df_consumo['bateria_restante'] = 576
+
+    bateria_patinete = {}
+
+    for idS in df_consumo.idS.unique():
+        df_patinete = df_consumo[df_consumo['idS'] == idS].reset_index(drop=True)
+        suma = df_patinete.consumo.sum()
+        bateria_restante = max(0, round(((576 - suma) / 576 * 100), 2))
+        bateria_patinete[idS] = bateria_restante
+
+    bateria_patinete = pd.DataFrame(list(bateria_patinete.items()), columns=['idS', 'bateria_restante'])
+
+    # Guardar el resultado en una nueva tabla
+    bateria_patinete.to_sql('bateria_patinete', engine, index=False, if_exists='replace')
 
 with dag:
     start_task = DummyOperator(task_id='start')
@@ -172,7 +203,12 @@ with dag:
         python_callable=resumen_diario_patinete
     )
 
+    bateria_patinete_task = PythonOperator(
+        task_id='bateria_patinete',
+        python_callable=bateria_patinete
+    )
+
     end_task = DummyOperator(task_id='end')
 
-    start_task >> cargar_csv_task >> ganancias_por_dia_task >> numero_viajes_por_patinete_task >> demanda_por_horas_task >> resumen_diario_patinete_task >> end_task
+    start_task >> cargar_csv_task >> ganancias_por_dia_task >> numero_viajes_por_patinete_task >> demanda_por_horas_task >> resumen_diario_patinete_task >> bateria_patinete_task >> end_task
 

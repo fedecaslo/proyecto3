@@ -1,39 +1,39 @@
-body,html {
+body, html {
     height: 100%;
-  }
-  
-  .chat-container {
-    /*margin: 0px;*/
+}
+
+.chat-container {
     padding: 0px;
     width: 500px;
-    /*margin: 35px 0px;*/
     margin-left: 15%;
     margin-right: 15%;
-  }
-  
-  .chat-message {
+}
+
+.chat-message {
     padding: 6px;
     border-radius: 6px;
     margin-bottom: 3px;
-  }
-  
-  .bot-message {
-    background: #22b538;
+}
+
+.bot-message {
+    background: #87cbd4;
     max-width: 300px;
     color: white;
-    margin-left: auto;
-  }
-  
-  .human-message {
-    background: dodgerblue;
+    margin-left: 0; /* Cambiado de "margin-left: auto;" a "margin-left: 0;" */
+    margin-right: auto;
+}
+
+.human-message {
+    background: rgb(123, 199, 136);
     max-width: 300px;
     color: white;
     margin: 13px 1px;
-  }
-  
-  .input {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.input {
     width: 500px;
-    /*margin: 35px 0px;*/
     margin-left: 15%;
     margin-right: 15%;
-  }
+}
