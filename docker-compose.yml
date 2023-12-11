@@ -67,8 +67,14 @@ services:
       - "3000:3000"
     environment:
       GF_SECURITY_ADMIN_PASSWORD: "password"
+      GF_SMTP_ENABLED: "true"
+      GF_SMTP_HOST: "smtp.gmail.com:587"
+      GF_SMTP_USER: "admin"
+      GF_SMTP_PASSWORD: "password"
+      GF_SMTP_FROM_ADDRESS: "admin@grafana.localhost"
+      GF_SMTP_FROM_NAME: "Grafana"
     depends_on:
-    - postgres
+      - postgres
 
   flask:
     container_name: flask

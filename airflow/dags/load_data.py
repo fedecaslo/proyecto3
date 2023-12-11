@@ -171,6 +171,7 @@ def bateria_patinete():
         bateria_patinete[idS] = bateria_restante
 
     bateria_patinete = pd.DataFrame(list(bateria_patinete.items()), columns=['idS', 'bateria_restante'])
+    bateria_patinete['Fecha']= datetime.now()
 
     # Guardar el resultado en una nueva tabla
     bateria_patinete.to_sql('bateria_patinete', engine, index=False, if_exists='replace')

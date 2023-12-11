@@ -20,7 +20,7 @@ def send_to_kafka(filename):
     with open(filename, newline='') as csvfile:
         reader = csv.reader(csvfile)
         from itertools import islice
-        for row in islice(reader, 3):
+        for row in islice(reader, 2):
             print("Row: ", row)
             producer.produce('csv_upload', ','.join(row))
     producer.flush()
