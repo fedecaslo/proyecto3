@@ -1,6 +1,8 @@
 # Proyecto 3 - Instrucciones de configuración
 
 Este README proporciona instrucciones paso a paso para configurar el entorno y replicar la arquitectura propuesta.
+<img width="947" alt="MicrosoftTeams-image" src="https://github.com/fedecaslo/proyecto3/assets/72439774/394f5add-645a-4b3e-a62a-54bc1fbe3257">
+
 
 ## 1. Iniciar Servicios con Docker Compose
 Ejecuta el siguiente comando para iniciar los servicios definidos en el archivo `docker-compose.yml`:
