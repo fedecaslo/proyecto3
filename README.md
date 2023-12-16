@@ -1,6 +1,13 @@
 # Proyecto 3 - Instrucciones de configuración
 
 Este README proporciona instrucciones paso a paso para configurar el entorno y replicar la arquitectura propuesta.
+
+En nuestra arquitectura, la parte prncipal será la base de datos donde almacenaremos todos los datos, y hemos elegido PostgreSQL para este propósito. Utilizaremos Flask para desarrollar una aplicación que pueda recibir archivos CSV siempre que se proporcione la contraseña correcta, y luego enviará estos archivos a un productor de Kafka. Además, los patinetes también pueden enviar información directamente a Kafka a través de los productores.
+
+La información que requiera procesamiento será manejada por Apache Airflow. Este componente recogerá datos de los consumidores de Kafka, procesará las consultas necesarias y los incorporará a la base de datos. En Flask, hemos implementado un webhook utilizando ngrok para conectar el chatbot de Dialogflow. Flask tiene acceso directo a la base de datos, lo que le permite enviar la información de las consultas al chatbot.
+
+Finalmente, toda la información almacenada en PostgreSQL puede ser visualizada en Grafana, donde hemos configurado alertas que se envían a través de Teams.
+
 <img width="947" alt="MicrosoftTeams-image" src="https://github.com/fedecaslo/proyecto3/assets/72439774/394f5add-645a-4b3e-a62a-54bc1fbe3257">
 
 
