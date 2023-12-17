@@ -20,6 +20,6 @@ docker exec -i airflow-scheduler /bin/bash <<EOF
 
 pip install confluent-kafka
 
-exit
+airflow scheduler
 
 EOF

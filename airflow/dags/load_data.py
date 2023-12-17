@@ -28,7 +28,7 @@ dag = DAG(
     'cargar_csv_a_postgres',
     default_args=default_args,
     description='Un DAG simple para cargar un archivo CSV en PostgreSQL y realizar consulta',
-    schedule_interval='@daily',  # Puedes ajustar la frecuencia según tus necesidades
+    schedule_interval=timedelta(minutes=2),  # Puedes ajustar la frecuencia según tus necesidades
     catchup=False,  # Evitar la ejecución de tareas para ejecuciones anteriores no ejecutadas
 )
 
