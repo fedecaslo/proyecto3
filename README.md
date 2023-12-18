@@ -63,11 +63,11 @@ Para conectar el chatbot a la API de Flask, sigue estos pasos:
 ```bash
 ngrok http 5001
 ```
-Esto abrirá una nueva ventana de ngrok, donde deberás fijarte en la fila de `Forwarding`` para encontrar la URL que comienza con "https://". Copia esa URL, ya que la necesitarás para configurar el webhook en Dialogflow.
+Esto abrirá una nueva ventana de ngrok, donde deberás fijarte en la fila de `Forwarding` para encontrar la URL que comienza con `https://`. Copia esa URL, ya que la necesitarás para configurar el webhook en Dialogflow.
 
 2. Accede a la consola de Dialogflow y selecciona tu proyecto.
 
-3. En la sección de configuración, busca la opción de "Fulfillment" o "Webhook" y habilita el webhook.
+3. En la sección de configuración, busca la opción de `Fulfillment` o `Webhook` y habilita el webhook.
 
 4. Pega la URL de ngrok que copiaste en el paso 1 en el campo de URL del webhook.
 
@@ -75,7 +75,7 @@ Esto abrirá una nueva ventana de ngrok, donde deberás fijarte en la fila de `F
 
 Con estos pasos, has configurado el webhook en Dialogflow para apuntar a la API de Flask a través de ngrok.
 
-Ahora, para interactuar con MR.Bin, abre tu navegador y accede a `localhost:5001/chat``. Desde allí, podrás comenzar a interactuar con MR.Bin a través del chatbot conectado a la API de Flask.
+Ahora, para interactuar con MR.Bin, abre tu navegador y accede a `localhost:5001/chat`. Desde allí, podrás comenzar a interactuar con MR.Bin a través del chatbot conectado a la API de Flask.
 
 ## 6. Configurar Grafana
 Abre Grafana en tu navegador en `localhost:3000` e añade una nueva fuente de datos PostgreSQL con los siguientes ajustes:
@@ -86,9 +86,9 @@ Abre Grafana en tu navegador en `localhost:3000` e añade una nueva fuente de da
 * Versión: PostgreSQL 12+
 
 ## 7. Configurar Consulta en Grafana
-En Grafana, ve al menú principal y selecciona "Folder" para crear uno nuevo. Luego, dentro del nuevo folder, selecciona "Dashboard" para crear un nuevo dashboard.
+En Grafana, ve al menú principal y selecciona `Folder` para crear uno nuevo. Luego, dentro del nuevo folder, selecciona `Dashboard` para crear un nuevo dashboard.
 
-Para editar el dashboard recién creado y selecciona "Add Panel" para agregar un nuevo panel. En la configuración del panel, selecciona "Query" y elige "SQL" como tipo de consulta. Copia y pega la siguiente consulta SQL en el campo de consulta:
+Para editar el dashboard recién creado y selecciona `Add Panel` para agregar un nuevo panel. En la configuración del panel, selecciona `Query` y elige `SQL` como tipo de consulta. Copia y pega la siguiente consulta SQL en el campo de consulta:
 
 ```sql
 SELECT
@@ -106,7 +106,7 @@ Esta consulta selecciona la fecha, el ID del patinete y la batería restante de 
 Para configurar alertas en Grafana y recibir notificaciones en Microsoft Teams, sigue estos pasos:
 
 1. Crear una Template en Connection Points
-Ve a "Connection Points" en Grafana.Crea una nueva template con el nombre "Bateria_baja".
+Ve a `Connection Points` en Grafana.Crea una nueva template con el nombre `Bateria_baja`.
 
 En el cuerpo del mensaje, utiliza el siguiente formato:
  
@@ -120,12 +120,12 @@ Se han detectado uno o más patinetes con un nivel de batería por debajo del 20
 ```
 2. Configurar el Punto de Conexión para Microsoft Teams
 
-En "Connection Points", selecciona la opción para configurar un nuevo punto de conexión. Elige "Microsoft Teams" como el tipo de conexión.En el campo "Message", introduce {{template "Bateria_baja"}}.
+En `Connection Points`, selecciona la opción para configurar un nuevo punto de conexión. Elige `Microsoft Teams` como el tipo de conexión.En el campo `Message`, introduce `{{template "Bateria_baja"}}``.
 
 Introduce la URL del webhook configurado en Microsoft Teams. 
 
 3. Para obtener la URL del webhook en Microsoft Teams:
-Ve al canal donde deseas recibir las alertas. Haz clic en los tres puntos (···) junto al nombre del canal y selecciona "Conectar a un flujo".Configura un conector de entrada y copia la URL del webhook generada.
+Ve al canal donde deseas recibir las alertas. Haz clic en los tres puntos `(···)`` junto al nombre del canal y selecciona `Conectar a un flujo`.Configura un conector de entrada y copia la URL del webhook generada.
 
 4. Configurar la Alerta en el Panel de Grafana
 
