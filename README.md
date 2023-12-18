@@ -125,7 +125,7 @@ En `Connection Points`, selecciona la opción para configurar un nuevo punto de 
 Introduce la URL del webhook configurado en Microsoft Teams. 
 
 3. Para obtener la URL del webhook en Microsoft Teams:
-Ve al canal donde deseas recibir las alertas. Haz clic en los tres puntos `(···)`` junto al nombre del canal y selecciona `Conectar a un flujo`.Configura un conector de entrada y copia la URL del webhook generada.
+Ve al canal donde deseas recibir las alertas. Haz clic en los tres puntos `(···)` junto al nombre del canal y selecciona `Conectar a un flujo`.Configura un conector de entrada y copia la URL del webhook generada.
 
 4. Configurar la Alerta en el Panel de Grafana
 
