@@ -46,7 +46,7 @@ Ejecuta el archivo `patinete.sh` utilizando el siguiente comando en una terminal
 chmod +x ./patinete.sh
 ./patinetes.sh
 ```
-Este sript simula el envío de nuevos datos al topic de kafka por parte de algunos patinetes de la flota.
+Este sript simula el envío de nuevos datos al topic de kafka por parte de algunos patinetes de la flota. Estos datos han sido generados artificialmente mediante un modelo generativo, CTGAN (Conditional Tabular Generative Adversarial Network). Para poder generar datos nuevos, descarga el [modelo](https://drive.google.com/file/d/1tuxLFPqbpbCkojnhQBXjF_bNz8-0fx0s/view?usp=sharing) e inclúyelo en la carpeta datos_sinteticos. Una vez que esté dentro, ejecuta el código `patinetes.py` dentro de esa carpeta. Los datos que generes se guardarán en `prueba.csv`.
 
 ## 4. Envío de lote de datos a través de flask
 Abre tu navegador y accede a `localhost:5001`. En la página HTML que aparecerá, podrás seleccionar un archivo CSV desde tu ordenador arrastrándolo a la página o utilizando el botón de selección de archivos. Después de seleccionar el archivo, se te solicitará una contraseña.Ingresa la contraseña requerida:
