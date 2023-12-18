@@ -8,8 +8,7 @@ La información que requiera procesamiento será manejada por Apache Airflow. Es
 
 Finalmente, toda la información almacenada en PostgreSQL puede ser visualizada en Grafana, donde hemos configurado alertas que se envían a través de Teams.
 
-<img width="947" alt="MicrosoftTeams-image" src="https://github.com/fedecaslo/proyecto3/assets/72439774/394f5add-645a-4b3e-a62a-54bc1fbe3257">
-
+![Captura de pantalla (48)](https://github.com/fedecaslo/proyecto3/assets/72439774/2eb7f67c-10c5-454a-9f10-f9e139f5395d)
 
 ## 1. Iniciar Servicios con Docker Compose
 Ejecuta el siguiente comando para iniciar los servicios definidos en el archivo `docker-compose.yml`:
