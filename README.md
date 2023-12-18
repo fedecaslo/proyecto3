@@ -2,7 +2,7 @@
 
 Este README proporciona instrucciones paso a paso para configurar el entorno y replicar la arquitectura propuesta.
 
-En nuestra arquitectura, la parte prncipal será la base de datos donde almacenaremos todos los datos, y hemos elegido PostgreSQL para este propósito. Utilizaremos Flask para desarrollar una aplicación que pueda recibir archivos CSV siempre que se proporcione la contraseña correcta, y luego enviará estos archivos a un productor de Kafka. Además, los patinetes también pueden enviar información directamente a Kafka a través de los productores.
+En nuestra arquitectura, la parte principal será la base de datos donde almacenaremos todos los datos, y hemos elegido PostgreSQL para este propósito. Utilizaremos Flask para desarrollar una aplicación que pueda recibir archivos CSV siempre que se proporcione la contraseña correcta, y luego enviará estos archivos a un productor de Kafka. Además, los patinetes también pueden enviar información directamente a Kafka a través de los productores.
 
 La información que requiera procesamiento será manejada por Apache Airflow. Este componente recogerá datos de los consumidores de Kafka, procesará las consultas necesarias y los incorporará a la base de datos. En Flask, hemos implementado un webhook utilizando ngrok para conectar el chatbot de Dialogflow. Flask tiene acceso directo a la base de datos, lo que le permite enviar la información de las consultas al chatbot.
 
@@ -25,7 +25,7 @@ Ejecuta el archivo `start.sh` utilizando el siguiente comando en una terminal nu
 chmod +x ./start.sh
 ./start.sh
 ```
-Este sript configura y prepara Apache Airflow con los comando necesarios.
+Este script configura y prepara Apache Airflow con los comando necesarios.
 
 Tras realizar esto, abre tu navegador y accede a `localhost:8080`. Inicia sesión con las siguientes credenciales:
 
