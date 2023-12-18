@@ -29,7 +29,7 @@ default_args = {
 dag = DAG(
     'kafka_to_postgres',
     default_args=default_args,
-    schedule_interval=timedelta(minutes=30),  # Ajusta según tus necesidades
+    schedule_interval=timedelta(minutes=1),  # Ajusta según tus necesidades
     catchup=False,  # Evitar la ejecución de tareas para ejecuciones anteriores no ejecutadas
 )
 
